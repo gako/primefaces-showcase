@@ -1,17 +1,25 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data.datatable;
 
@@ -41,16 +49,16 @@ public class GroupView implements Serializable {
     
     static {		
 		manufacturers = new String[10];
-		manufacturers[0] = "Apple";
-		manufacturers[1] = "Samsung";
-		manufacturers[2] = "Microsoft";
-		manufacturers[3] = "Philips";
-		manufacturers[4] = "Sony";
-		manufacturers[5] = "LG";
-		manufacturers[6] = "Sharp";
-		manufacturers[7] = "Panasonic";
-		manufacturers[8] = "HTC";
-		manufacturers[9] = "Nokia";
+		manufacturers[0] = "Bamboo Watch";
+		manufacturers[1] = "Black Watch";
+		manufacturers[2] = "Blue Band";
+		manufacturers[3] = "Blue T-Shirt";
+		manufacturers[4] = "Brown Purse";
+		manufacturers[5] = "Chakra Bracelet";
+		manufacturers[6] = "Galaxy Earrings";
+		manufacturers[7] = "Game Controller";
+		manufacturers[8] = "Gaming Set";
+		manufacturers[9] = "Gold Phone Case";
 	}
         
     static {
@@ -69,19 +77,19 @@ public class GroupView implements Serializable {
         
     @PostConstruct
     public void init() {
-        sales = new ArrayList<Sale>();
+        sales = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
             sales.add(new Sale(manufacturers[i], getRandomAmount(), getRandomAmount(), getRandomPercentage(), getRandomPercentage()));
         }
         
-        years = new ArrayList<Integer>();
+        years = new ArrayList<>();
         years.add(2010);
         years.add(2011);
         years.add(2012);
         years.add(2013);
         years.add(2014);
         
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
             players.add(new Player(playerNames[i], generateRandomGoalStatsData()));
         }
@@ -132,7 +140,7 @@ public class GroupView implements Serializable {
     }
 
     private Map<Integer,Integer> generateRandomGoalStatsData() {
-        Map<Integer,Integer> stats = new LinkedHashMap<Integer, Integer>();
+        Map<Integer,Integer> stats = new LinkedHashMap<>();
         for (int i = 0; i < 5; i++) {
             stats.put(years.get(i), getRandomGoals());
         }

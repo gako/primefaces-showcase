@@ -1,24 +1,32 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import org.primefaces.showcase.domain.Theme;
-import org.primefaces.showcase.service.ThemeService;
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -34,15 +42,15 @@ import java.util.List;
 public class OrderListView {
     
     @Inject
-    private ThemeService service;
+    private CountryService service;
     
     private List<String> cities;
-    private List<Theme> themes;
+    private List<Country> countries;
     
     @PostConstruct
     public void init() {
         //Cities
-        cities = new ArrayList<String>();
+        cities = new ArrayList<>();
         cities.add("San Francisco");
         cities.add("London");
         cities.add("Paris");
@@ -51,15 +59,15 @@ public class OrderListView {
         cities.add("Barcelona");
         cities.add("Rome");
              
-        //Themes
-        themes = service.getThemes().subList(0, 6);    
+        //Countrys
+        countries = service.getCountries().subList(0,10);
     }
 
-    public ThemeService getService() {
+    public CountryService getService() {
         return service;
     }
 
-    public void setService(ThemeService service) {
+    public void setService(CountryService service) {
         this.service = service;
     }
 
@@ -71,20 +79,20 @@ public class OrderListView {
         this.cities = cities;
     }
 
-    public List<Theme> getThemes() {
-        return themes;
+    public List<Country> getCountries() {
+        return countries;
     }
 
-    public void setThemes(List<Theme> themes) {
-        this.themes = themes;
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
     }    
     
-    public void onSelect(SelectEvent<Theme> event) {
+    public void onSelect(SelectEvent<Country> event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().getName()));
     }
     
-    public void onUnselect(UnselectEvent<Theme> event) {
+    public void onUnselect(UnselectEvent<Country> event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().getName()));
     }

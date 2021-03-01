@@ -1,46 +1,55 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data.datatable;
 
 import java.util.Comparator;
 import org.primefaces.model.SortOrder;
-import org.primefaces.showcase.domain.Car;
+import org.primefaces.showcase.domain.Customer;
 
-public class LazySorter implements Comparator<Car> {
+public class LazySorter implements Comparator<Customer> {
 
     private String sortField;
-    
     private SortOrder sortOrder;
-    
+
     public LazySorter(String sortField, SortOrder sortOrder) {
         this.sortField = sortField;
         this.sortOrder = sortOrder;
     }
 
-    public int compare(Car car1, Car car2) {
+    @Override
+    public int compare(Customer customer1, Customer customer2) {
         try {
-            Object value1 = Car.class.getField(this.sortField).get(car1);
-            Object value2 = Car.class.getField(this.sortField).get(car2);
+            Object value1 = customer1.getClass().getField(sortField).get(customer1);
+            Object value2 = customer2.getClass().getField(sortField).get(customer2);
 
             int value = ((Comparable)value1).compareTo(value2);
             
             return SortOrder.ASCENDING.equals(sortOrder) ? value : -1 * value;
         }
         catch(Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
+
 }

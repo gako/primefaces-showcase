@@ -1,25 +1,33 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.dnd;
 
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.showcase.domain.Car;
-import org.primefaces.showcase.service.CarService;
+import org.primefaces.showcase.domain.Product;
+import org.primefaces.showcase.service.ProductService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -35,20 +43,20 @@ import java.util.Map;
 @ViewScoped
 public class ColumnManagerView implements Serializable {
     
-    private final List<String> VALID_COLUMN_KEYS = Arrays.asList("id", "brand", "year", "color");
+    private final List<String> VALID_COLUMN_KEYS = Arrays.asList("id", "code", "name", "description", "price", "category", "quantity");
     
-    private List<ColumnModel> columns = new ArrayList<ColumnModel>();
+    private List<ColumnModel> columns = new ArrayList<>();
     
-    private List<Car> cars;
+    private List<Product> products;
     
     private TreeNode availableColumns;
     
     @Inject
-    private CarService service;
+    private ProductService service;
     
     @PostConstruct
     public void init() {
-        cars = service.createCars(9);
+        products = service.getProducts(9);
         createAvailableColumns();
         createDynamicColumns();
     }
@@ -57,14 +65,17 @@ public class ColumnManagerView implements Serializable {
         availableColumns = new DefaultTreeNode("Root", null);
         TreeNode root = new DefaultTreeNode("Columns", availableColumns);
         root.setExpanded(true);
-        TreeNode model = new DefaultTreeNode("column", new ColumnModel("Id", "id"), root);
-        TreeNode year = new DefaultTreeNode("column", new ColumnModel("Year", "year"), root);
-        TreeNode manufacturer = new DefaultTreeNode("column", new ColumnModel("Brand", "brand"), root);
-        TreeNode color = new DefaultTreeNode("column", new ColumnModel("Color", "color"), root);
+        TreeNode id = new DefaultTreeNode("column", new ColumnModel("Id", "id"), root);
+        TreeNode code = new DefaultTreeNode("column", new ColumnModel("Code", "code"), root);
+        TreeNode name = new DefaultTreeNode("column", new ColumnModel("Name", "name"), root);
+        TreeNode description = new DefaultTreeNode("column", new ColumnModel("Description", "description"), root);
+        TreeNode price = new DefaultTreeNode("column", new ColumnModel("Price", "price"), root);
+        TreeNode category = new DefaultTreeNode("column", new ColumnModel("Category", "category"), root);
+        TreeNode quantity = new DefaultTreeNode("column", new ColumnModel("Quantity", "quantity"), root);
     }
       
     public void createDynamicColumns() {
-        String[] columnKeys = new String[]{"id","year","brand"};
+        String[] columnKeys = new String[]{"code","name","quantity"};
         columns.clear();  
          
         for(String columnKey : columnKeys) {
@@ -111,8 +122,8 @@ public class ColumnManagerView implements Serializable {
         TreeNode property = new DefaultTreeNode("column", model, availableColumns.getChildren().get(0));
     }
 
-    public List<Car> getCars() {
-        return cars;
+    public List<Product> getProducts() {
+        return products;
     }
 
     public List<ColumnModel> getColumns() {
@@ -123,7 +134,7 @@ public class ColumnManagerView implements Serializable {
         return availableColumns;
     }
 
-    public void setService(CarService service) {
+    public void setService(ProductService service) {
         this.service = service;
     }
     

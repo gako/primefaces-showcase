@@ -1,3 +1,26 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2021 PrimeTek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package org.primefaces.showcase.view.data.dataexporter;
 
 import java.io.IOException;
@@ -25,65 +48,66 @@ import org.primefaces.util.EscapeUtils;
 
 public class TextExporter extends DataTableExporter {
 
-    private StringBuilder builder = new StringBuilder();
+    private OutputStreamWriter osw;
+    private PrintWriter writer;
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
-        ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, config.getOutputFileName());
+    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
 
-        if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
+        osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
+        writer = new PrintWriter(osw);
+
+        if (exportConfiguration.getPreProcessor() != null) {
+            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
         }
     }
 
     @Override
-    protected void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
-        builder.append("" + table.getId() + "\n");
+    protected void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
 
-        if (config.isPageOnly()) {
-            exportPageOnly(context, table, builder);
-        }
-        else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, builder);
-        }
-        else {
-            exportAll(context, table, builder);
+        writer.append("" + table.getId() + "\n");
+
+        if (exportConfiguration.isPageOnly()) {
+            exportPageOnly(context, table, writer);
+        } else if (exportConfiguration.isSelectionOnly()) {
+            exportSelectionOnly(context, table, writer);
+        } else {
+            exportAll(context, table, writer);
         }
 
-        builder.append("" + table.getId() + "");
+        writer.append("" + table.getId() + "");
 
         table.setRowIndex(-1);
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
-        if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
+    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
+
+        if (exportConfiguration.getPostProcessor() != null) {
+            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
         }
 
-        OutputStream os = context.getExternalContext().getResponseOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, config.getEncodingType());
-        PrintWriter writer = new PrintWriter(osw);
-        writer.write(builder.toString());
         writer.flush();
         writer.close();
-        builder.setLength(0);
+        writer = null;
+
+        osw.close();
+        osw = null;
     }
 
     @Override
     protected void preRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t" + table.getVar() + "\n");
+        ((PrintWriter) document).append("\t" + table.getVar() + "\n");
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t" + table.getVar() + "\n");
+        ((PrintWriter) document).append("\t" + table.getVar() + "\n");
     }
 
     @Override
     protected void exportCells(DataTable table, Object document) {
-        StringBuilder builder = (StringBuilder) document;
+        PrintWriter writer = (PrintWriter) document;
         for (UIColumn col : table.getColumns()) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
@@ -91,7 +115,7 @@ public class TextExporter extends DataTableExporter {
 
             if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
-                addColumnValue(builder, col.getChildren(), columnTag, col);
+                addColumnValue(writer, col.getChildren(), columnTag, col);
             }
         }
     }
@@ -114,34 +138,36 @@ public class TextExporter extends DataTableExporter {
         return EscapeUtils.forXmlTag(columnTag);
     }
 
-    protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) {
+    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, String tag, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append("\t\t" + tag + "");
+        writer.append("\t\t" + tag + "");
 
         if (column.getExportFunction() != null) {
-            builder.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
+            writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
                     if (value != null) {
-                        builder.append(EscapeUtils.forXml(value));
+                        writer.append(EscapeUtils.forXml(value));
                     }
                 }
             }
         }
 
-        builder.append("" + tag + "\n");
+        writer.append("" + tag + "\n");
     }
 
-    protected void configureResponse(ExternalContext externalContext, String filename) {
-        externalContext.setResponseContentType("text/plain");
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".txt"));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+    @Override
+    public String getContentType() {
+        return "text/plain";
     }
+
+    @Override
+    public String getFileExtension() {
+        return ".txt";
+    }
+
 }

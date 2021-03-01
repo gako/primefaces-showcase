@@ -11,33 +11,27 @@
     </ui:define>
 
     <ui:define name="description">
-        OutputLabel is an extension to standard outputLabel component. Extended features are;
-        <ul style="color: white;">
-            <li>OutputLabel sets its value as the label of the target component
-                    to be displayed in validation errors so that target component does not need to define label attribute again.</li>
-            <li>Support for components with non-trivial markup like spinner, autocomplete, calendar
-                and so on which are not supported by standard outputLabel.</li>
-            <li>Theme aware error styling when associated component is not valid.</li>
-            <li>Required field indicator.</li>
-        </ul>
+        OutputLabel is an extension to standard outputLabel component.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/outputlabel" />
+    <ui:param name="documentationLink" value="/components/outputlabel"/>
 
     <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages id="messages"/>
+                <h:panelGrid columns="2" cellpadding="7">
+                    <h:outputLabel for="name" value="Standard Label"/>
+                    <p:inputText id="name" required="true"/>
 
-        <h:form>
-            <p:panel id="panel" header="Form" style="margin-bottom:10px;">
-                <p:messages id="messages" />
-                <h:panelGrid columns="2" cellpadding="5">
-                    <h:outputLabel for="name" value="Standard Label:" />
-                    <p:inputText id="name" required="true" />
+                    <p:outputLabel for="@next" value="Extended Label"/>
+                    <p:inputText id="extended" required="true"/>
 
-                    <p:outputLabel for="@next" value="Extended Label:" />
-                    <p:inputText id="extended" required="true" />
-
-                    <p:outputLabel for="@next" value="Number:" />
+                    <p:outputLabel for="@next" value="Number"/>
                     <p:spinner id="number" value="0"/>
+
+                    <p:commandButton value="Submit" update="@form" styleClass="p-mt-3"/>
+                    <p:spacer />
 
                     <!-- For testing, don't remove!
                     <p:outputLabel for="@next" value="Label which considers @NotNull:" />
@@ -59,11 +53,8 @@
                     <composite:inputTextWrapper id="notNullInCompositeComposite" value="#{outputLabelView.value}" />
                     -->
                 </h:panelGrid>
-            </p:panel>
-
-            <p:commandButton value="Submit" update="panel"  />
-        </h:form>
-
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>

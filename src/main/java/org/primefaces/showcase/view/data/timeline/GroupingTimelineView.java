@@ -1,17 +1,25 @@
 /*
- * Copyright 2009-2019 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data.timeline;
 
@@ -38,8 +46,9 @@ import org.primefaces.model.timeline.TimelineGroup;
 @Named("groupingTimelineView")
 @ViewScoped
 public class GroupingTimelineView implements Serializable {
-  
+
     private TimelineModel<Order, Truck> model;
+    private TimelineModel<Order, Truck> model2;
     private TimelineEvent<Order> event; // current changed event
     private List<TimelineEvent<Order>> overlappedOrders; // all overlapped orders (events) to the changed order (event)
     private List<TimelineEvent<Order>> ordersToMerge; // selected orders (events) in the dialog which should be merged
@@ -47,33 +56,21 @@ public class GroupingTimelineView implements Serializable {
     @PostConstruct
     protected void initialize() {
         // create timeline model
-        model = new TimelineModel<>();
+        model = newModelWithNumber(6);
+        model2 = newModelWithNumber(30);
 
-        // create groups
-        TimelineGroup<Truck> group1 = new TimelineGroup<>("id1", new Truck("10"));
-        TimelineGroup<Truck> group2 = new TimelineGroup<>("id2", new Truck("11"));
-        TimelineGroup<Truck> group3 = new TimelineGroup<>("id3", new Truck("12"));
-        TimelineGroup<Truck> group4 = new TimelineGroup<>("id4", new Truck("13"));
-        TimelineGroup<Truck> group5 = new TimelineGroup<>("id5", new Truck("14"));
-        TimelineGroup<Truck> group6 = new TimelineGroup<>("id6", new Truck("15"));
+    }
 
-        // add groups to the model
-        model.addGroup(group1);
-        model.addGroup(group2);
-        model.addGroup(group3);
-        model.addGroup(group4);
-        model.addGroup(group5);
-        model.addGroup(group6);
+    public TimelineModel<Order,Truck> newModelWithNumber(int n) {
+        TimelineModel<Order, Truck>  model = new TimelineModel<>();
 
         int orderNumber = 1;
-
-        // iterate over groups
-        for (int j = 1; j <= 6; j++) {
+        for (int j = 1; j <= n; j++) {
+            model.addGroup(new TimelineGroup<Truck>("id" + j, new Truck(String.valueOf(9+j))));
             LocalDateTime referenceDate = LocalDateTime.of(2015, Month.DECEMBER, 14, 8, 0);
-            // iterate over events in the same group
+
             for (int i = 0; i < 6; i++) {
                 LocalDateTime startDate = referenceDate.plusHours(3 * (Math.random() < 0.2 ? 1 : 0));
-
                 LocalDateTime endDate = startDate.plusHours(2 + (int) Math.floor(Math.random() * 4));
 
                 String imagePath = null;
@@ -82,16 +79,28 @@ public class GroupingTimelineView implements Serializable {
                 }
 
                 Order order = new Order(orderNumber, imagePath);
-                model.add(new TimelineEvent<>(order, startDate, endDate, true, "id" + j));
+                model.add(TimelineEvent.<Order>builder()
+                        .data(order)
+                        .startDate(startDate)
+                        .endDate(endDate)
+                        .editable(true)
+                        .group("id" + j)
+                        .build());
 
                 orderNumber++;
                 referenceDate = endDate;
             }
         }
+
+        return model;
     }
 
     public TimelineModel<Order, Truck> getModel() {
         return model;
+    }
+
+    public TimelineModel<Order, Truck> getModel2() {
+        return model2;
     }
 
     public void onChange(TimelineModificationEvent<Order> e) {

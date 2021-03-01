@@ -6,19 +6,24 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Charts - <span class="subitem">OHLC</span>
+        Charts <span class="subitem">OHLC</span>
     </ui:define>
 
     <ui:define name="description">
         OhlcChart is created with a OhlcChartModel.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="chart-1"/>
 
     <ui:define name="implementation">
-        <p:chart type="ohlc" model="#{chartView.ohlcModel}" style="width:400px;height:300px"/>
-        <br /><br />
-        <p:chart type="ohlc" model="#{chartView.ohlcModel2}" style="width:400px;height:300px"/>
+        <div class="card">
+            <p:chart type="ohlc" model="#{chartView.ohlcModel}" style="width:400px;height:300px"/>
+        </div>
+        <br/><br/>
+        <div class="card">
+            <p:chart type="ohlc" model="#{chartView.ohlcModel2}" style="width:400px;height:300px"/>
+        </div>
     </ui:define>
 
 </ui:composition>

@@ -1,22 +1,30 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.input;
 
-import org.primefaces.showcase.domain.Theme;
-import org.primefaces.showcase.service.ThemeService;
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -32,81 +40,108 @@ import java.util.Map;
 @Named
 @RequestScoped
 public class SelectOneMenuView {
-    
-    private String console; 
+
+    private String selectedOption;
     private String rtl;
-    
-    private String car;  
-    private List<SelectItem> cars;
-    
-    private String city;  
-    private Map<String,String> cities = new HashMap<String, String>();
-    
-    private Theme theme;   
-    private List<Theme> themes;
-    
-    private String option;  
+    private String hideNoSelectOption;
+
+    private String countryGroup;
+    private List<SelectItem> countriesGroup;
+
+    private String city;
+    private Map<String, String> cities = new HashMap<>();
+
+    private Country country;
+    private List<Country> countries;
+
+    private String option;
     private List<String> options;
 
     private String longItemLabel;
+    private String labeled;
     
     @Inject
-    private ThemeService service;
-    
+    private CountryService service;
+
     @PostConstruct
     public void init() {
-        //cars
-        SelectItemGroup g1 = new SelectItemGroup("German Cars");
-        g1.setSelectItems(new SelectItem[] {new SelectItem("BMW", "BMW"), new SelectItem("Mercedes", "Mercedes"), new SelectItem("Volkswagen", "Volkswagen")});
-        
-        SelectItemGroup g2 = new SelectItemGroup("American Cars");
-        g2.setSelectItems(new SelectItem[] {new SelectItem("Chrysler", "Chrysler"), new SelectItem("GM", "GM"), new SelectItem("Ford", "Ford")});
-        
-        cars = new ArrayList<SelectItem>();
-        cars.add(g1);
-        cars.add(g2);
-        
+
+        countriesGroup = new ArrayList<>();
+
+        SelectItemGroup europeCountries = new SelectItemGroup("Europe Countries");
+        europeCountries.setSelectItems(new SelectItem[]{
+                new SelectItem("Germany", "Germany"),
+                new SelectItem("Turkey", "Turkey"),
+                new SelectItem("Spain", "Spain")
+        });
+
+        SelectItemGroup americaCountries = new SelectItemGroup("America Countries");
+        americaCountries.setSelectItems(new SelectItem[]{
+                new SelectItem("United States", "United States"),
+                new SelectItem("Brazil", "Brazil"),
+                new SelectItem("Mexico", "Mexico")
+        });
+
+        countriesGroup.add(europeCountries);
+        countriesGroup.add(americaCountries);
+
         //cities
-        cities = new HashMap<String, String>();
+        cities = new HashMap<>();
         cities.put("New York", "New York");
-        cities.put("London","London");
-        cities.put("Paris","Paris");
-        cities.put("Barcelona","Barcelona");
-        cities.put("Istanbul","Istanbul");
-        cities.put("Berlin","Berlin");
-        
-        //themes
-        themes = service.getThemes();
-        
+        cities.put("London", "London");
+        cities.put("Paris", "Paris");
+        cities.put("Barcelona", "Barcelona");
+        cities.put("Istanbul", "Istanbul");
+        cities.put("Berlin", "Berlin");
+
+        //countries
+        countries = service.getCountries();
+
         //options
-        options = new ArrayList<String>();
-        for(int i = 0; i < 20; i++) {
+        options = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
             options.add("Option " + i);
         }
     }
 
-    public String getConsole() {
-        return console;
+    public String getSelectedOption() {
+        return selectedOption;
     }
 
-    public void setConsole(String console) {
-        this.console = console;
+    public void setSelectedOption(String selectedOption) {
+        this.selectedOption = selectedOption;
     }
 
     public String getRtl() {
         return rtl;
+    }
+    
+    public String getHideNoSelectOption() {
+        return hideNoSelectOption;
+    }
+
+    public void setHideNoSelectOption(String hideNoSelectOption) {
+        this.hideNoSelectOption = hideNoSelectOption;
     }
 
     public void setRtl(String rtl) {
         this.rtl = rtl;
     }
 
-    public String getCar() {
-        return car;
+    public String getCountryGroup() {
+        return countryGroup;
     }
 
-    public void setCar(String car) {
-        this.car = car;
+    public void setCountryGroup(String countryGroup) {
+        this.countryGroup = countryGroup;
+    }
+
+    public List<SelectItem> getCountriesGroup() {
+        return countriesGroup;
+    }
+
+    public void setCountriesGroup(List<SelectItem> countriesGroup) {
+        this.countriesGroup = countriesGroup;
     }
 
     public String getCity() {
@@ -117,29 +152,25 @@ public class SelectOneMenuView {
         this.city = city;
     }
 
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-    }
-    
-    public List<SelectItem> getCars() {
-        return cars;
-    }
-
     public Map<String, String> getCities() {
         return cities;
     }
 
-    public List<Theme> getThemes() {
-        return themes;
+    public void setCities(Map<String, String> cities) {
+        this.cities = cities;
     }
-    
-    public void setService(ThemeService service) {
-        this.service = service;
-    } 
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
 
     public String getOption() {
         return option;
@@ -163,5 +194,17 @@ public class SelectOneMenuView {
 
     public void setLongItemLabel(String longItemLabel) {
         this.longItemLabel = longItemLabel;
+    }
+
+    public String getLabeled() {
+        return labeled;
+    }
+
+    public void setLabeled(String labeled) {
+        this.labeled = labeled;
+    }
+
+    public void setService(CountryService service) {
+        this.service = service;
     }
 }

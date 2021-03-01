@@ -3,10 +3,14 @@ target
 .project
 .settings
 nbactions.xml
+nb-configuration.xml
 .vscode
 layout.classpath
 .sass-cache
 layout.css
 layout.css.map
 .DS_STORE
+.idea
 bin
+/src/main/webapp/resources/primefaces-bootstrap4-*/
+/showcase.iml

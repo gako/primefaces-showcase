@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Ajax Framework - <span class="subitem">Fragment</span>
+        Ajax Framework <span class="subitem">Fragment</span>
     </ui:define>
 
     <ui:define name="description">
@@ -20,24 +20,23 @@
     <ui:param name="documentationLink" value="/components/fragment" />
 
     <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:inputText id="ignored" required="true" placeholder="Required field" />
 
-        <h:form>
-            <h:panelGrid columns="2" cellpadding="5">
-                <p:outputLabel for="ignored" value="Required" />
-                <p:inputText id="ignored" required="true" />
-            </h:panelGrid>
+                <p:divider />
 
-            <p:fragment>
-                <p:autoUpdate />
-                <h:panelGrid columns="4" cellpadding="5">
-                    <p:outputLabel for="txt" value="Text Value:" />
-                    <p:inputText id="txt" value="#{basicView.text}" />
-                    <p:commandButton value="Submit"/>
-                    <h:outputText value="#{basicView.text}" />
-                </h:panelGrid>
-            </p:fragment>
-        </h:form>
-
+                <p:fragment>
+                    <p:autoUpdate/>
+                    
+                    <h:panelGrid columns="4" cellpadding="7">
+                        <p:inputText id="txt" value="#{fragmentView.text}" placeholder="Fragment Field" />
+                        <p:commandButton value="Submit"/>
+                        <h:outputText value="#{fragmentView.text}"/>
+                    </h:panelGrid>
+                </p:fragment>
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>

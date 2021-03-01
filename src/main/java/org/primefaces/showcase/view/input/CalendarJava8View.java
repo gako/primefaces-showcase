@@ -1,17 +1,25 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.input;
 
@@ -23,6 +31,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.validation.constraints.Future;
 import java.io.Serializable;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +42,9 @@ import java.util.List;
 @ViewScoped
 public class CalendarJava8View implements Serializable {
 
+    private LocalDate date;
     private LocalDate date1;
+    @Future
     private LocalDate date2;
     private LocalDate date3;
     private LocalDate date4;
@@ -47,16 +58,23 @@ public class CalendarJava8View implements Serializable {
     private LocalDate date11;
     private LocalDate date12;
     private LocalDate date13;
+    private LocalDate date14;
     private LocalTime time1;
     private LocalTime time2;
     private LocalTime time3;
     private LocalTime time4;
     private LocalTime time5;
     private LocalTime time6;
+    private LocalTime time7;
+    private LocalTime time8;
     private LocalDateTime dateTime1;
+    @Future
     private LocalDateTime dateTime2;
     private LocalDateTime dateTime3;
     private LocalDateTime dateTime4;
+    private LocalDateTime dateTime5;
+    private LocalDateTime dateTime6;
+    private LocalDateTime dateTime7;
     private LocalDateTime dateTimeDe;
     private List<LocalDate> multi;
     private List<LocalDate> range;
@@ -96,18 +114,32 @@ public class CalendarJava8View implements Serializable {
         dateTimeDe = LocalDateTime.of(2019, 7, 27, 12, 59);
         dateTime4 = LocalDateTime.now();
 
-        time4= LocalTime.of(6, 30);
+        time4= LocalTime.of(10, 30);
     }
 
     public void onDateSelect(SelectEvent<LocalDate> event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", event.getObject().format(formatter)));
+    }
+
+    public void onDateTimeSelect(SelectEvent<LocalDateTime> event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", event.getObject().format(formatter)));
     }
 
     public void click() {
         PrimeFaces.current().ajax().update("form:display");
         PrimeFaces.current().executeScript("PF('dlg').show()");
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public LocalDate getDate1() {
@@ -310,6 +342,14 @@ public class CalendarJava8View implements Serializable {
         this.date13 = date13;
     }
 
+    public LocalDate getDate14() {
+        return date14;
+    }
+
+    public void setDate14(LocalDate date14) {
+        this.date14 = date14;
+    }
+
     public ZonedDateTime getZonedDateTime1() {
         return zonedDateTime1;
     }
@@ -404,5 +444,45 @@ public class CalendarJava8View implements Serializable {
 
     public void setDateTime4(LocalDateTime dateTime4) {
         this.dateTime4 = dateTime4;
+    }
+
+    public LocalDateTime getDateTime5() {
+        return dateTime5;
+    }
+
+    public void setDateTime5(LocalDateTime dateTime5) {
+        this.dateTime5 = dateTime5;
+    }
+
+    public LocalDateTime getDateTime6() {
+        return dateTime6;
+    }
+
+    public void setDateTime6(LocalDateTime dateTime6) {
+        this.dateTime6 = dateTime6;
+    }
+
+    public LocalTime getTime7() {
+        return time7;
+    }
+
+    public void setTime7(LocalTime time7) {
+        this.time7 = time7;
+    }
+
+    public LocalDateTime getDateTime7() {
+        return dateTime7;
+    }
+
+    public void setDateTime7(LocalDateTime dateTime7) {
+        this.dateTime7 = dateTime7;
+    }
+
+    public LocalTime getTime8() {
+        return time8;
+    }
+
+    public void setTime8(LocalTime time8) {
+        this.time8 = time8;
     }
 }

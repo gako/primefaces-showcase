@@ -6,17 +6,20 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Charts - <span class="subitem">Combined</span>
+        Charts <span class="subitem">Combined</span>
     </ui:define>
 
     <ui:define name="description">
         Different types of series can be displayed on the same graph.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="chart-1"/>
 
     <ui:define name="implementation">
-        <p:chart type="bar" model="#{chartView.combinedModel}" style="height:300px" />
+        <div class="card">
+            <p:chart type="bar" model="#{chartView.combinedModel}" style="height:300px"/>
+        </div>
     </ui:define>
 
 </ui:composition>

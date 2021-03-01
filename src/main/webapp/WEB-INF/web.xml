@@ -27,7 +27,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Production</param-value>
+        <param-value>Development</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
@@ -56,7 +56,11 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>#{guestPreferences.theme}</param-value>
+        <param-value>#{app.theme}</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.DIR</param-name>
+        <param-value>#{app.locale.rtl ? 'rtl' : 'ltr'}</param-value>
     </context-param>
     <context-param>
         <param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
@@ -67,9 +71,23 @@
         <param-value>false</param-value>
     </context-param>
     <context-param>
+        <param-name>primefaces.TRANSFORM_METADATA</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.COOKIES_SAME_SITE</param-name>
+        <param-value>Strict</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.CACHE_PROVIDER</param-name>
         <param-value>org.primefaces.showcase.util.EHCache3Provider</param-value>
     </context-param>
+    <!--
+    <context-param>
+        <param-name>primefaces.FLEX</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    -->
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
@@ -78,6 +96,11 @@
     <context-param>
     	<param-name>com.sun.faces.serializeServerState</param-name>
     	<param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
+        <param-value>client-window</param-value>
     </context-param>
 
     <listener>
@@ -120,6 +143,15 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FileUpload Resume Servlet</servlet-name>
+        <servlet-class>org.primefaces.webapp.FileUploadChunksServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileUpload Resume Servlet</servlet-name>
+        <url-pattern>/file/resume/</url-pattern>
     </servlet-mapping>
 
     <mime-mapping>

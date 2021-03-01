@@ -3,59 +3,56 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                template="./template.xhtml">
+                template="/WEB-INF/template.xhtml">
 
-    <ui:define name="head">
-        <style type="text/css">
-            .ui-datatable-header {
-                height: 50px
-            }
-        </style>
-    </ui:define>
-    
     <ui:define name="title">
-        DataTable - <span class="subitem">ColumnToggler</span>
+        DataTable <span class="subitem">ColumnToggler</span>
     </ui:define>
 
     <ui:define name="description">
         ColumnToggler is a helper component of datatable to toggle the visibility of columns.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="datatable-1"/>
 
     <ui:define name="implementation">
-        
-        <p:dataTable id="cars" var="car" value="#{dtBasicView.cars}">
-            <f:facet name="header">
-                List of Cars
+        <div class="card">
+            <p:dataTable id="products" var="product" value="#{dtBasicView.products}">
+                <f:facet name="header">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        List of Products
 
-                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
-                <p:columnToggler datasource="cars" trigger="toggler" />
-            </f:facet>
-            
-            <p:column headerText="Id">
-                <h:outputText value="#{car.id}" />
-            </p:column>
+                        <div>
+                            <p:commandButton id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="products" trigger="toggler"/>
+                        </div>
+                    </div>
+                </f:facet>
 
-            <p:column headerText="Year">
-                <h:outputText value="#{car.year}" />
-            </p:column>
+                <p:column headerText="Code">
+                    <h:outputText value="#{product.code}" />
+                </p:column>
 
-            <p:column headerText="Brand">
-                <h:outputText value="#{car.brand}" />
-            </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{product.name}" />
+                </p:column>
 
-            <p:column headerText="Color">
-                <h:outputText value="#{car.color}" />
-            </p:column>
-            
-            <p:column headerText="Price">
-                <h:outputText value="#{car.price}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-            </p:column>
-        </p:dataTable>
-        
+                <p:column headerText="Category">
+                    <h:outputText value="#{product.category}" />
+                </p:column>
+
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{product.quantity}" />
+                </p:column>
+
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}">
+                        <f:convertNumber type="currency" currencySymbol="$"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </div>
     </ui:define>
 
 </ui:composition>

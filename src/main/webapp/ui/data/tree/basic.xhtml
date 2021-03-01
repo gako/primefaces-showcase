@@ -3,10 +3,10 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                template="./template.xhtml">
+                template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Tree - <span class="subitem">Basic</span>
+        Tree <span class="subitem">Basic</span>
     </ui:define>
 
     <ui:define name="description">
@@ -14,24 +14,31 @@
         available.
     </ui:define>
 
+    <ui:param name="documentationLink" value="/components/tree"/>
+    <ui:param name="widgetLink" value="verticaltree-1"/>
+
     <ui:define name="implementation">
 
         <h:form>
-            <h3 style="margin-top:0">Client</h3>
-            <p:tree value="#{treeBasicView.root}" var="node">
-                <p:treeNode>
-                    <h:outputText value="#{node}" />
-                </p:treeNode>
-            </p:tree>
-            
-            <h3>Ajax</h3>
-            <p:tree value="#{treeBasicView.root}" var="node" dynamic="true">
-                <p:treeNode>
-                    <h:outputText value="#{node}" />
-                </p:treeNode>
-            </p:tree>
+            <div class="card">
+                <h5 style="margin-top:0">Client</h5>
+                <p:tree value="#{treeBasicView.root}" var="node">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+
+            <div class="card">
+                <h5>Ajax</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" dynamic="true">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
         </h:form>
-        
+
     </ui:define>
 
 </ui:composition>

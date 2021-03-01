@@ -6,19 +6,24 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Charts - <span class="subitem">Bubble</span>
+        Charts <span class="subitem">Bubble</span>
     </ui:define>
 
     <ui:define name="description">
         BubbleChart is created using a BubbleChartModel.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="chart-1"/>
 
     <ui:define name="implementation">
-        <p:chart type="bubble" model="#{chartView.bubbleModel1}" />
-        <br /><br />
-        <p:chart type="bubble" model="#{chartView.bubbleModel2}" />
+        <div class="card">
+            <p:chart type="bubble" model="#{chartView.bubbleModel1}"/>
+        </div>
+        <br/><br/>
+        <div class="card">
+            <p:chart type="bubble" model="#{chartView.bubbleModel2}"/>
+        </div>
     </ui:define>
 
 </ui:composition>

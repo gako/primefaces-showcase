@@ -1,23 +1,31 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data.datatable;
 
 import javax.faces.view.ViewScoped;
-import org.primefaces.showcase.domain.Car;
-import org.primefaces.showcase.service.CarService;
+import org.primefaces.showcase.domain.Product;
+import org.primefaces.showcase.service.ProductService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
@@ -33,39 +41,39 @@ import java.util.List;
 @ViewScoped
 public class ColumnsView implements Serializable {
     
-    private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("id", "brand", "year", "color", "price");
+    private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("code", "name", "category", "quantity");
 	
-    private String columnTemplate = "id brand year";
+    private String columnTemplate = "code name quantity";
     
     private List<ColumnModel> columns;
     
-    private List<Car> cars;
+    private List<Product> products;
     
-    private List<Car> filteredCars;
+    private List<Product> filteredProducts;
     
     @Inject
-    private CarService service;
+    private ProductService service;
 
     @PostConstruct
     public void init() {
-        cars = service.createCars(10);
+        products = service.getProducts(10);
         
         createDynamicColumns();
     }
     
-    public List<Car> getCars() {
-        return cars;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public List<Car> getFilteredCars() {
-        return filteredCars;
+    public List<Product> getFilteredProducts() {
+        return filteredProducts;
     }
 
-    public void setFilteredCars(List<Car> filteredCars) {
-        this.filteredCars = filteredCars;
+    public void setFilteredProducts(List<Product> filteredProducts) {
+        this.filteredProducts = filteredProducts;
     }
 
-    public void setService(CarService service) {
+    public void setService(ProductService service) {
         this.service = service;
     }
 
@@ -83,7 +91,7 @@ public class ColumnsView implements Serializable {
 
     private void createDynamicColumns() {
         String[] columnKeys = columnTemplate.split(" ");
-        columns = new ArrayList<ColumnModel>();   
+        columns = new ArrayList<>();
         
         for(String columnKey : columnKeys) {
             String key = columnKey.trim();
@@ -96,7 +104,7 @@ public class ColumnsView implements Serializable {
     
     public void updateColumns() {
         //reset table state
-        UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:cars");
+        UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:products");
         table.setValueExpression("sortBy", null);
         
         //update columns

@@ -4,17 +4,20 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Charts - <span class="subitem">Donut</span>
+        Charts <span class="subitem">Donut</span>
     </ui:define>
 
     <ui:define name="description">
         DonutChart is created with a DonutChartModel.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/charts?id=donutchart" />
+    <ui:param name="documentationLink" value="/components/charts?id=donutchart"/>
+    <ui:param name="widgetLink" value="donutchart"/>
 
     <ui:define name="implementation">
-        <p:donutChart model="#{chartJsView.donutModel}" style="width: 100%; height: 500px;"/>
+        <div class="card">
+            <p:donutChart model="#{chartJsView.donutModel}" style="width: 100%; height: 500px;"/>
+        </div>
     </ui:define>
 
 </ui:composition>

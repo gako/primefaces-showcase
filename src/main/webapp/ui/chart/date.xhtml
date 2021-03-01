@@ -6,17 +6,20 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Charts - <span class="subitem">Date</span>
+        Charts <span class="subitem">Date</span>
     </ui:define>
 
     <ui:define name="description">
         Dates in charts are displayed using DateAxis API that provides special zooming, boundaries and formatting capabilities.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="chart-1"/>
 
     <ui:define name="implementation">
-        <p:chart type="line" model="#{chartView.dateModel}" style="height:400px;"/>
+        <div class="card">
+            <p:chart type="line" model="#{chartView.dateModel}" style="height:400px;"/>
+        </div>
     </ui:define>
 
 </ui:composition>

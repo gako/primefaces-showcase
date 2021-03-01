@@ -6,27 +6,27 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Dialog Framework - <span class="subitem">Basic</span>
+        Dialog Framework <span class="subitem">Basic</span>
     </ui:define>
 
     <ui:define name="description">
         An external page can be displayed in a dynamically generated dialog on runtime.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/core/dialogframework" />
+    <ui:param name="documentationLink" value="/core/dialogframework"/>
 
     <ui:define name="implementation">
-        
-        <h:form>
-            <p:commandButton value="View" icon="pi pi-home" action="#{dfView.viewCars}" />
-            <p:commandButton value="Options" icon="pi pi-home" action="#{dfView.viewCarsCustomized}" />
-        </h:form>
-        
+        <div class="card">
+            <h:form>
+                <p:commandButton value="View" icon="pi pi-home" action="#{dfView.viewProducts}" styleClass="p-mr-2" />
+                <p:commandButton value="Options" icon="pi pi-cog" action="#{dfView.viewProductsCustomized}" styleClass="ui-button-outlined"/>
+            </h:form>
+        </div>
     </ui:define>
 
     <ui:define name="more-source-tabs">
-        <p:tab title="/ui/df/viewCars.xhtml">
-            <f:attribute name="flatten" value="true" />
+        <p:tab title="/ui/df/viewProducts.xhtml">
+            <f:attribute name="flatten" value="true"/>
         </p:tab>
     </ui:define>
 

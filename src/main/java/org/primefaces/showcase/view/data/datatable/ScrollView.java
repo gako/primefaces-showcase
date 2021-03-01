@@ -1,24 +1,32 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data.datatable;
 
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.showcase.domain.Car;
-import org.primefaces.showcase.service.CarService;
+import org.primefaces.showcase.domain.Customer;
+import org.primefaces.showcase.service.CustomerService;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -30,61 +38,61 @@ import java.util.List;
 @ViewScoped
 public class ScrollView implements Serializable {
     
-    private List<Car> cars1;
-    private List<Car> cars2;
-    private List<Car> cars3;
-    private List<Car> cars4;
-    private List<Car> cars5;
-    private List<Car> cars6;
-    private LazyDataModel<Car> lazyModel;
-    
+    private List<Customer> products1;
+    private List<Customer> products2;
+    private List<Customer> products3;
+    private List<Customer> products4;
+    private List<Customer> products5;
+    private List<Customer> products6;
+    private LazyDataModel<Customer> lazyModel;
+
     @Inject
-    private CarService service;
+    private CustomerService service;
 
     @PostConstruct
     public void init() {
-        cars1 = service.createCars(50);
-        cars2 = service.createCars(10);
-        cars3 = service.createCars(50);
-        cars4 = service.createCars(50);
-        cars5 = service.createCars(50);
-        cars6 = service.createCars(200);
-        lazyModel = new LazyCarDataModel(service.createCars(20000));
+        products1 = service.getCustomers(50);
+        products2 = service.getCustomers(10);
+        products3 = service.getCustomers(50);
+        products4 = service.getCustomers(50);
+        products5 = service.getCustomers(50);
+        products6 = service.getCustomers(200);
+        lazyModel = new LazyCustomerDataModel(service.getCustomers(20000));
     }
 
-    public List<Car> getCars1() {
-        return cars1;
+    public List<Customer> getCustomers1() {
+        return products1;
     }
 
-    public List<Car> getCars2() {
-        return cars2;
+    public List<Customer> getCustomers2() {
+        return products2;
     }
 
-    public List<Car> getCars3() {
-        return cars3;
+    public List<Customer> getCustomers3() {
+        return products3;
     }
 
-    public List<Car> getCars4() {
-        return cars4;
+    public List<Customer> getCustomers4() {
+        return products4;
     }
 
-    public List<Car> getCars5() {
-        return cars5;
+    public List<Customer> getCustomers5() {
+        return products5;
     }
 
-    public List<Car> getCars6() {
-        return cars6;
+    public List<Customer> getCustomers6() {
+        return products6;
     }
 
-    public LazyDataModel<Car> getLazyModel() {
+    public LazyDataModel<Customer> getLazyModel() {
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<Car> lazyModel) {
+    public void setLazyModel(LazyDataModel<Customer> lazyModel) {
         this.lazyModel = lazyModel;
     }
 
-    public void setService(CarService service) {
+    public void setService(CustomerService service) {
         this.service = service;
     }
 }

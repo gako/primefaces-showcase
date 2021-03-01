@@ -1,23 +1,31 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2021 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.showcase.view.data.datatable;
 
 import org.primefaces.event.RowEditEvent;
-import org.primefaces.showcase.domain.Car;
-import org.primefaces.showcase.service.CarService;
+import org.primefaces.showcase.domain.Product;
+import org.primefaces.showcase.service.ProductService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -27,52 +35,45 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import org.primefaces.showcase.domain.InventoryStatus;
 
 @Named("dtAddRowView")
 @ViewScoped
 public class AddRowView implements Serializable {
     
-    private List<Car> cars1;
+    private List<Product> products1;
 
     @Inject
-    private CarService service;
+    private ProductService service;
     
     @PostConstruct
     public void init() {
-        cars1 = service.createCars(15);
+        products1 = service.getClonedProducts(15);
     }
 
-    public List<Car> getCars1() {
-        return cars1;
+    public List<Product> getProducts1() {
+        return products1;
     }
 
-    public List<String> getBrands() {
-        return service.getBrands();
-    }
-    
-    public List<String> getColors() {
-        return service.getColors();
-    }
-
-    public void setService(CarService service) {
+    public void setService(ProductService service) {
         this.service = service;
     }
     
-    public void onRowEdit(RowEditEvent<Car> event) {
-        FacesMessage msg = new FacesMessage("Car Edited", event.getObject().getId());
+    public void onRowEdit(RowEditEvent<Product> event) {
+        FacesMessage msg = new FacesMessage("Product Edited", String.valueOf(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
-    public void onRowCancel(RowEditEvent<Car> event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", event.getObject().getId());
+    public void onRowCancel(RowEditEvent<Product> event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", String.valueOf(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onAddNew() {
-        // Add one new car to the table:
-        Car car2Add = service.createCars(1).get(0);
-        cars1.add(car2Add);
-        FacesMessage msg = new FacesMessage("New Car added", car2Add.getId());
+        // Add one new product to the table:
+        Product newProduct = new Product((int) (Math.random() * 10000), "f230fh0g3", "New Bamboo Watch", "Product Description", "bamboo-watch.jpg", 100, "Accessories", 24, InventoryStatus.INSTOCK, 5);
+        products1.add(newProduct);
+        FacesMessage msg = new FacesMessage("New Product added", String.valueOf(newProduct.getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
